@@ -1,6 +1,6 @@
 package com.natalieytan.pokedex.network
 
-import com.natalieytan.pokedex.models.PokemonSummary
+import com.natalieytan.pokedex.models.Pokemon
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -25,7 +25,7 @@ private val retrofit = Retrofit.Builder()
 
 interface PokemonApiService {
     @GET("https://gist.githubusercontent.com/natalieytan/eb3bac2b50377207dd0e7c117068b3b2/raw/50214e592c20c89f58b84e9dbdd29f47a6750219/pokemon.json")
-    suspend fun getPokemonList(): List<PokemonSummary>
+    suspend fun getPokemonList(): List<Pokemon>
 }
 
 object PokemonApi {

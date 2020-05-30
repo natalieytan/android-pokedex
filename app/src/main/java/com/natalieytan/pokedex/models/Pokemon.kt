@@ -1,6 +1,6 @@
 package com.natalieytan.pokedex.models
 
-data class PokemonSummary(
+data class Pokemon(
     val id: Int,
     val sprites: Sprites,
     val name: String,
