@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
+
+    <ImageView
+        android:id="@+id/pokemonSprite"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/pokemon_sprite_content_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/pokemonId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/pokemonSprite"
+        app:layout_constraintTop_toTopOf="@id/pokemonSprite"
+        tools:text="#001" />
+
+    <TextView
+        android:id="@+id/pokemonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorPrimaryText"
+        android:textFontWeight="100"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/pokemonId"
+        app:layout_constraintTop_toBottomOf="@id/pokemonId"
+        tools:text="Bulbasaur" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/pokemonName"
+        app:layout_constraintTop_toBottomOf="@id/pokemonName">
+
+        <TextView
+            android:id="@+id/pokemonTypePrimary"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_corner"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
+            android:shadowColor="@color/colorShadow"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="2.0"
+            android:textAlignment="center"
+            android:textColor="@color/colorHighlight"
+            android:textStyle="bold"
+            tools:text="Grass" />
+
+        <TextView
+            android:id="@+id/pokemonTypeSecondary"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
+            android:shadowColor="@color/colorShadow"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="2.0"
+            android:textAlignment="center"
+            android:textColor="@color/colorHighlight"
+            android:textStyle="bold"
+            tools:text="Poison" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
