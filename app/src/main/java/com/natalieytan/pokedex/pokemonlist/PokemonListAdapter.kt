@@ -4,7 +4,10 @@ import PokemonListItemViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.natalieytan.pokedex.R
 import com.natalieytan.pokedex.models.Pokemon
 
@@ -28,6 +31,16 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListItemViewHolder>() {
 
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
         val pokemon = data[position]
+        val pokemonSpriteUri = pokemon.sprites.normal.toUri().buildUpon().scheme("https").build()
+
+        Glide.with(holder.pokemonSprite.context)
+            .load(pokemonSpriteUri)
+            .apply(RequestOptions()
+                .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                .error(R.drawable.ic_baseline_broken_image_24)
+            )
+            .into(holder.pokemonSprite)
+
         holder.pokemonId.text = "#${pokemon.id.toString().padStart(3, '0')}"
         holder.pokemonName.text = pokemon.name
 
