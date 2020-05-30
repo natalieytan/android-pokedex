@@ -3,13 +3,12 @@ package com.natalieytan.pokedex
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.natalieytan.pokedex.models.PokemonSummary
 import com.natalieytan.pokedex.network.ApiStatus
 import com.natalieytan.pokedex.network.PokemonApi
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class PokemonListViewModel : ViewModel() {
     private val _pokemonList = MutableLiveData<String>()
@@ -20,27 +19,29 @@ class PokemonListViewModel : ViewModel() {
     val status: LiveData<ApiStatus>
         get() = _status
 
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
     init {
         getPokemon()
     }
 
     private fun getPokemon() {
-        _status.value = ApiStatus(ApiStatus.Status.LOADING, null)
+        coroutineScope.launch {
+            _status.value = ApiStatus(ApiStatus.Status.LOADING, null)
+            try {
+                var pokemonList = PokemonApi.retrofitService.getPokemonList()
+                _pokemonList.value = "Success ${pokemonList.size} pokemon"
+                _status.value = ApiStatus(ApiStatus.Status.DONE, null)
+            } catch (t: Throwable) {
+                _status.value = ApiStatus(ApiStatus.Status.ERROR, t.message)
+                _pokemonList.value = "Error ${t.message}"
+            }
+        }
+    }
 
-        PokemonApi.retrofitService.getPokemonList()
-            .enqueue(object : Callback<List<PokemonSummary>> {
-                override fun onFailure(call: Call<List<PokemonSummary>>, t: Throwable) {
-                    _status.value = ApiStatus(ApiStatus.Status.ERROR, t.message)
-                    _pokemonList.value = "Error ${t.message}"
-                }
-
-                override fun onResponse(
-                    call: Call<List<PokemonSummary>>,
-                    response: Response<List<PokemonSummary>>
-                ) {
-                    _status.value = ApiStatus(ApiStatus.Status.DONE, null)
-                    _pokemonList.value = "Success ${response.body()?.size} pokemon"
-                }
-            })
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }
