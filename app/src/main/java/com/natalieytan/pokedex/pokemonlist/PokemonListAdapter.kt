@@ -1,14 +1,8 @@
 package com.natalieytan.pokedex.pokemonlist
 
 import PokemonListItemViewHolder
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.natalieytan.pokedex.R
 import com.natalieytan.pokedex.models.Pokemon
 
 class PokemonListAdapter : RecyclerView.Adapter<PokemonListItemViewHolder>() {
@@ -22,39 +16,13 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListItemViewHolder>() {
         parent: ViewGroup,
         viewType: Int
     ): PokemonListItemViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.pokemon_list_item, parent, false)
-        return PokemonListItemViewHolder(view)
+        return PokemonListItemViewHolder.from(parent)
     }
 
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
         val pokemon = data[position]
-        val pokemonSpriteUri = pokemon.sprites.normal.toUri().buildUpon().scheme("https").build()
-
-        Glide.with(holder.pokemonSprite.context)
-            .load(pokemonSpriteUri)
-            .apply(RequestOptions()
-                .placeholder(R.drawable.ic_baseline_cloud_download_24)
-                .error(R.drawable.ic_baseline_broken_image_24)
-            )
-            .into(holder.pokemonSprite)
-
-        holder.pokemonId.text = "#${pokemon.id.toString().padStart(3, '0')}"
-        holder.pokemonName.text = pokemon.name
-
-        val typePrimary = pokemon.type[0]
-        val typeSecondary = pokemon.type.getOrNull(1)
-
-        holder.pokemonTypePrimary.text = typePrimary
-
-        when (typeSecondary) {
-            null -> holder.pokemonTypeSecondary.visibility = View.GONE
-            else -> {
-                holder.pokemonTypeSecondary.text = typeSecondary
-                holder.pokemonTypeSecondary.visibility = View.VISIBLE
-            }
-        }
+        holder.bind(pokemon)
     }
 }
