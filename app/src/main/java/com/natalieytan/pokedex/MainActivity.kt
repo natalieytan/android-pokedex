@@ -1,19 +1,19 @@
 package com.natalieytan.pokedex
 
+import PokemonListItemViewHolder
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.natalieytan.pokedex.network.ApiStatus
+import com.natalieytan.pokedex.pokemondetail.PokemonDetailActivity
 import com.natalieytan.pokedex.pokemonlist.PokemonListAdapter
 import com.natalieytan.pokedex.pokemonlist.PokemonListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private var toast: Toast? = null
-
     private val viewModel: PokemonListViewModel by lazy {
         ViewModelProvider(this).get(PokemonListViewModel::class.java)
     }
@@ -24,10 +24,9 @@ class MainActivity : AppCompatActivity() {
 
         val pokemonItemClickListener =
             PokemonListItemViewHolder.PokemonListItemClickListener { pokemonId ->
-                toast?.cancel()
-                toast =
-                    Toast.makeText(this, "Pokemon with id $pokemonId selected", Toast.LENGTH_SHORT)
-                toast?.show()
+                val intent = Intent(this, PokemonDetailActivity::class.java)
+                intent.putExtra(Intent.EXTRA_INDEX, pokemonId)
+                startActivity(intent)
             }
 
         val adapter = PokemonListAdapter(pokemonItemClickListener)
