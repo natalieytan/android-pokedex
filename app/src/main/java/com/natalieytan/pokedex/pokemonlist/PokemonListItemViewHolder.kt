@@ -19,9 +19,13 @@ class PokemonListItemViewHolder private constructor(itemView: View) :
     private val pokemonTypeSecondary: TextView = itemView.findViewById(R.id.pokemonTypeSecondary)
 
     fun bind(
-        pokemon: Pokemon
+        pokemon: Pokemon, pokemonListItemClickListener: PokemonListItemClickListener
     ) {
+        itemView.setOnClickListener { pokemonListItemClickListener.onClick(pokemon) }
+
         val pokemonSpriteUri = pokemon.sprites.normal.toUri().buildUpon().scheme("https").build()
+        val typePrimary = pokemon.type[0]
+        val typeSecondary = pokemon.type.getOrNull(1)
 
         Glide.with(pokemonSprite.context)
             .load(pokemonSpriteUri)
@@ -34,12 +38,7 @@ class PokemonListItemViewHolder private constructor(itemView: View) :
 
         pokemonId.text = "#${pokemon.id.toString().padStart(3, '0')}"
         pokemonName.text = pokemon.name
-
-        val typePrimary = pokemon.type[0]
-        val typeSecondary = pokemon.type.getOrNull(1)
-
         pokemonTypePrimary.text = typePrimary
-
         when (typeSecondary) {
             null -> pokemonTypeSecondary.visibility = View.GONE
             else -> {
@@ -55,5 +54,9 @@ class PokemonListItemViewHolder private constructor(itemView: View) :
             val view = layoutInflater.inflate(R.layout.pokemon_list_item, parent, false)
             return PokemonListItemViewHolder(view)
         }
+    }
+
+    class PokemonListItemClickListener(val clickListener: (pokemonId:Int) -> Unit) {
+        fun onClick(pokemon: Pokemon) = clickListener(pokemon.id)
     }
 }
