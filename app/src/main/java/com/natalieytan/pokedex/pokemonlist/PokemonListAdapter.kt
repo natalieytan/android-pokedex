@@ -2,16 +2,12 @@ package com.natalieytan.pokedex.pokemonlist
 
 import PokemonListItemViewHolder
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.natalieytan.pokedex.models.Pokemon
 
-class PokemonListAdapter : RecyclerView.Adapter<PokemonListItemViewHolder>() {
-    var data = listOf<Pokemon>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
+class PokemonListAdapter : ListAdapter<Pokemon, PokemonListItemViewHolder>(PokemonListDiffCallBack()) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -19,10 +15,14 @@ class PokemonListAdapter : RecyclerView.Adapter<PokemonListItemViewHolder>() {
         return PokemonListItemViewHolder.from(parent)
     }
 
-    override fun getItemCount(): Int = data.size
-
     override fun onBindViewHolder(holder: PokemonListItemViewHolder, position: Int) {
-        val pokemon = data[position]
+        val pokemon = getItem(position)
         holder.bind(pokemon)
     }
+}
+
+class PokemonListDiffCallBack: DiffUtil.ItemCallback<Pokemon>() {
+    override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean = (oldItem.id == newItem.id)
+
+    override fun areContentsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean = (oldItem == newItem)
 }

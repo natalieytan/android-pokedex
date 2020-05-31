@@ -38,9 +38,10 @@ class MainActivity : AppCompatActivity() {
                     loader.visibility = View.GONE
                     error.visibility = View.GONE
                     pokemonList.visibility = View.VISIBLE
-                    viewModel.pokemonList.value?.let { adapter.data = it }
                 }
             }
         })
+
+        viewModel.pokemonList.observe(this, Observer { adapter.submitList(it) })
     }
 }

@@ -29,8 +29,8 @@ class PokemonListViewModel : ViewModel() {
 
     private fun getPokemon() {
         coroutineScope.launch {
-            _status.value = ApiStatus(ApiStatus.Status.LOADING, null)
             try {
+                _status.value = ApiStatus(ApiStatus.Status.LOADING, null)
                 var pokemonList = PokemonApi.retrofitService.getPokemonList()
                 _pokemonList.value = pokemonList
                 _status.value = ApiStatus(ApiStatus.Status.DONE, null)
